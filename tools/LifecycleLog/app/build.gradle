@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.lifecyclelog"
-        minSdkVersion 8
+        minSdkVersion 14
         targetSdkVersion 19
     }
 

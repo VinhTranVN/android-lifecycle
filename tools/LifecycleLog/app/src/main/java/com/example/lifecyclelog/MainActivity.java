@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 
 import static com.example.lifecyclelog.Util.LifecycleState.CALL_TO_SUPER;
 import static com.example.lifecyclelog.Util.LifecycleState.RETURN_FROM_SUPER;
@@ -20,12 +21,36 @@ import static com.example.lifecyclelog.Util.recLifeCycle;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class MainActivity extends Activity {
+
+    private boolean isFlag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         recLifeCycle(getClass(), CALL_TO_SUPER);
         super.onCreate(savedInstanceState);
         recLifeCycle(getClass(), RETURN_FROM_SUPER);
         setContentView(R.layout.activity_main);
+
+        // replace fragment
+        findViewById(R.id.replace_fragment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TestFragment fragment;
+                if(isFlag){
+                    fragment = new TestFragment();
+                } else {
+                    fragment = new AFragment();
+                }
+
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment, fragment.getClass().getSimpleName())
+                        .addToBackStack(null)
+                        .commit();
+
+                isFlag = !isFlag;
+            }
+        });
+
 
         FragmentManager.enableDebugLogging(true);
         LoaderManager.enableDebugLogging(true);
